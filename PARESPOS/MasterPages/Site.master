@@ -1,0 +1,69 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PARESPOS.Site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS System - <asp:ContentPlaceHolder ID="TitleContent" runat="server"></asp:ContentPlaceHolder></title>
+    
+    <!-- CSS references -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#E56441',
+                        secondary: '#A8A8AC',
+                        background: '#f7f7f7',
+                        success: '#10B981',
+                        warning: '#F59E0B',
+                        danger: '#EF4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="bg-background min-h-screen flex flex-col">
+    <form id="form1" runat="server">
+        <!-- Top Navigation Bar -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-cash-register text-primary text-2xl mr-2"></i>
+                    <h1 class="text-xl font-bold text-gray-800">POS System</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">Welcome, <asp:Literal ID="litUserName" runat="server"></asp:Literal></span>
+                    <asp:LinkButton ID="btnLogout" runat="server" CssClass="text-sm text-gray-600 hover:text-primary" OnClick="btnLogout_Click">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </asp:LinkButton>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex overflow-hidden">
+            <!-- Sidebar (if needed) -->
+            <asp:ContentPlaceHolder ID="SidebarContent" runat="server">
+            </asp:ContentPlaceHolder>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 flex overflow-hidden">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </main>
+        </div>
+    </form>
+
+    <asp:ContentPlaceHolder ID="ScriptsContent" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
