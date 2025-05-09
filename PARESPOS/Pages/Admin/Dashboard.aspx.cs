@@ -114,8 +114,8 @@ namespace PARESPOS.Pages.Admin
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            // Redirect to login page
-            Response.Redirect("/Pages/Accounts/Login.aspx");
+            // Just redirect to login page
+            Response.Redirect("~/Pages/Accounts/Login.aspx");
         }
 
         // Optional: Add a search function implementation for the search bar

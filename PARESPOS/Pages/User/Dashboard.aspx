@@ -1,32 +1,98 @@
-﻿<%@ Page Title="POS Dashboard" Language="C#" MasterPageFile="~/MasterPages/Site.master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="PARESPOS.Pages.User.Dashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="PARESPOS.Pages.User.Dashboard" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-    POS Dashboard
-</asp:Content>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Pares POS - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* Custom styles that will complement Tailwind */
+        body {
+            font-family: 'Poppins', sans-serif; /* Changed from Inter to Poppins */
+        }
 
-<asp:Content ID="Content2" ContentPlaceHolderID="HeadContent" runat="server">
-    <!-- Additional head content for user dashboard -->
-</asp:Content>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
 
-<asp:Content ID="Content3" ContentPlaceHolderID="SidebarContent" runat="server">
-    <!-- No sidebar for cashier view -->
-</asp:Content>
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
 
-<asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="flex-1 flex overflow-hidden min-h-[calc(100vh-56px)]">
-        <!-- Left Side: Products -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- Categories Navigation -->
-            <div class="bg-white p-4 border-b">
-                <div class="flex space-x-2 overflow-x-auto pb-2">
-                    <asp:LinkButton ID="btnAllItems" runat="server" OnClick="btnCategory_Click" CommandArgument="All"
-                        CssClass="px-4 py-2 bg-primary text-white rounded-md whitespace-nowrap">All Items</asp:LinkButton>
-                    
+        /* Custom color classes */
+        .bg-primary {
+            background-color: #E56441;
+        }
+
+        .bg-secondary {
+            background-color: #3E5E77;
+        }
+
+        .bg-light {
+            background-color: #f7f7f7;
+        }
+
+        .bg-neutral {
+            background-color: #A8A8AC;
+        }
+
+        .text-primary {
+            color: #E56441;
+        }
+
+        .text-secondary {
+            color: #3E5E77;
+        }
+
+        .border-primary {
+            border-color: #E56441;
+        }
+
+        .border-secondary {
+            border-color: #3E5E77;
+        }
+
+        .hover\:bg-primary-dark:hover {
+            background-color: #D45435;
+        }
+
+        .hover\:bg-secondary-dark:hover {
+            background-color: #344E63;
+        }
+
+        .focus\:ring-primary:focus {
+            --tw-ring-color: #E56441;
+        }
+
+        .focus\:ring-secondary:focus {
+            --tw-ring-color: #3E5E77;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <form id="form1" runat="server">
+        <div class="flex h-screen">
+            <!-- Left Sidebar for Categories Navigation -->
+            <div class="w-64 bg-white shadow-md h-full fixed left-0 top-0 overflow-y-auto no-scrollbar">
+                <div class="p-4 border-b border-gray-200">
+                    <h1 class="text-2xl font-bold text-primary">Pares POS</h1>
+                </div>
+                <div class="p-4">
+                    <h2 class="text-lg font-semibold mb-3 text-secondary">Categories</h2>
                     <asp:Repeater ID="rptCategories" runat="server">
                         <ItemTemplate>
-                            <asp:LinkButton ID="btnCategory" runat="server" OnClick="btnCategory_Click" 
+                            <asp:LinkButton ID="btnCategory" runat="server"
                                 CommandArgument='<%# Eval("CategoryID") %>'
-                                CssClass="px-4 py-2 bg-gray-100 text-gray-700 rounded-md whitespace-nowrap hover:bg-gray-200">
+                                OnClick="btnCategory_Click"
+                                CssClass="block w-full text-left py-2 px-3 mb-1 rounded hover:bg-primary hover:text-white transition-colors duration-200">
                                 <%# Eval("CategoryName") %>
                             </asp:LinkButton>
                         </ItemTemplate>
@@ -34,221 +100,188 @@
                 </div>
             </div>
 
-            <!-- Search Bar -->
-            <div class="bg-white p-4 border-b">
-                <div class="flex">
-                    <asp:TextBox ID="txtSearch" runat="server" placeholder="Search products..." 
-                        CssClass="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-primary focus:border-primary"></asp:TextBox>
-                    <asp:LinkButton ID="btnSearch" runat="server" OnClick="btnSearch_Click"
-                        CssClass="bg-primary text-white px-4 py-2 rounded-r-md">
-                        <i class="fas fa-search"></i>
-                    </asp:LinkButton>
+            <!-- Main Content Area -->
+            <div class="ml-64 mr-80 flex-1 flex flex-col h-screen">
+                <!-- Search Bar -->
+                <div class="p-4 bg-white shadow-sm">
+                    <div class="flex">
+                        <asp:TextBox ID="txtSearch" runat="server"
+                            CssClass="flex-1 py-2 px-4 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Search products..."></asp:TextBox>
+                        <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click"
+                            CssClass="bg-primary text-white py-2 px-4 rounded-r hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50" />
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="flex-1 p-4 overflow-y-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <asp:Repeater ID="rptProducts" runat="server" OnItemCommand="rptProducts_ItemCommand">
+                            <ItemTemplate>
+                                <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
+                                    <!-- SKU at the top -->
+                                    <div class="absolute top-2 left-2 bg-secondary text-white text-xs px-2 py-1 rounded-full">
+                                        SKU: <%# Eval("ProductID") %>
+                                    </div>
+
+                                    <!-- Stock Status -->
+                                    <div class='<%# GetStockStatusClass(Eval("StockStatus").ToString()) %>'>
+                                        <%# Eval("StockStatus") %>
+                                    </div>
+
+                                    <img src='<%# Eval("ImageUrl") %>' alt='<%# Eval("ProductName") %>' class="w-full h-48 object-cover" />
+
+                                    <div class="p-4">
+                                        <h3 class="text-lg font-semibold text-secondary"><%# Eval("ProductName") %></h3>
+                                        <p class="text-gray-500 text-sm"><%# Eval("CategoryName") %></p>
+                                        <div class="flex justify-between items-center mt-3">
+                                            <span class="text-xl font-bold text-primary">₱<%# Eval("Price", "{0:0.00}") %></span>
+                                            <asp:LinkButton ID="btnAddToCart" runat="server"
+                                                CommandName="AddToCart"
+                                                CommandArgument='<%# Eval("ProductID") %>'
+                                                CssClass='<%# Convert.ToBoolean(Eval("InStock")) ? "bg-primary text-white py-1 px-3 rounded hover:bg-primary-dark" : "bg-neutral text-white py-1 px-3 rounded cursor-not-allowed" %>'
+                                                Enabled='<%# Convert.ToBoolean(Eval("InStock")) %>'>
+                                                <i class="fas fa-plus mr-1"></i> Add
+                                            </asp:LinkButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </div>
                 </div>
             </div>
 
-            <!-- Products Grid -->
-            <div class="flex-1 overflow-y-auto p-4 bg-gray-50 min-h-[calc(100vh-300px)]">
-                <asp:Repeater ID="rptProducts" runat="server" OnItemCommand="rptProducts_ItemCommand">
-                    <HeaderTemplate>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    </HeaderTemplate>
-                    <ItemTemplate>
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition">
-                            <div class="h-40 bg-gray-200 relative">
-                                <img src='<%# Eval("ImageUrl") %>' alt='<%# Eval("ProductName") %>' class="w-full h-full object-cover">
-                                <span class='<%# GetStockStatusClass(Eval("StockStatus").ToString()) %>'>
-                                    <%# Eval("StockStatus") %>
-                                </span>
-                            </div>
-                            <div class="p-4">
-                                <h3 class="font-medium text-gray-800"><%# Eval("ProductName") %></h3>
-                                <p class="text-gray-500 text-sm"><%# Eval("CategoryName") %></p>
-                                <div class="mt-2 flex justify-between items-center">
-                                    <span class="font-bold text-primary"><%# Eval("Price", "${0:F2}") %></span>
-                                    <asp:LinkButton ID="btnAddToCart" runat="server" CommandName="AddToCart" CommandArgument='<%# Eval("ProductID") %>'
-                                        CssClass='<%# Convert.ToBoolean(Eval("InStock")) ? "text-primary hover:text-primary/80" : "text-gray-400 cursor-not-allowed" %>'
-                                        Enabled='<%# Convert.ToBoolean(Eval("InStock")) %>'>
-                                        <i class="fas fa-plus-circle text-lg"></i>
+            <!-- Right Sidebar (Checkout) -->
+            <div class="w-80 bg-white shadow-md h-full fixed right-0 top-0 flex flex-col">
+                <div class="p-4 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-secondary">Order Summary</h2>
+                    <p class="text-sm text-gray-500">Order #<asp:Label ID="lblOrderNumber" runat="server" CssClass="font-semibold"></asp:Label></p>
+                </div>
+
+                <!-- Order Items -->
+                <div class="p-4 overflow-y-auto flex-grow">
+                    <asp:Repeater ID="rptOrderItems" runat="server" OnItemCommand="rptOrderItems_ItemCommand">
+                        <ItemTemplate>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <div class="flex-1">
+                                    <h4 class="font-medium"><%# Eval("ProductName") %></h4>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <span>₱<%# Eval("Price", "{0:0.00}") %> x <%# Eval("Quantity") %></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="font-semibold mr-2">₱<%# Eval("Subtotal", "{0:0.00}") %></span>
+                                    <asp:LinkButton ID="btnRemoveItem" runat="server"
+                                        CommandName="RemoveItem"
+                                        CommandArgument='<%# Eval("ProductID") %>'
+                                        CssClass="text-primary hover:text-primary-dark">
+                                        <i class="fas fa-minus-circle"></i>
                                     </asp:LinkButton>
                                 </div>
                             </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+
+                <!-- Order Calculations and Checkout (Sticky) -->
+                <div class="mt-auto">
+                    <!-- Order Calculations -->
+                    <div class="p-4 bg-light">
+                        <div class="flex justify-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>₱<asp:Label ID="lblSubtotal" runat="server">0.00</asp:Label></span>
                         </div>
-                    </ItemTemplate>
-                    <FooterTemplate>
+                        <div class="flex justify-between mb-2">
+                            <span>Tax (<asp:Label ID="lblTaxRate" runat="server">12</asp:Label>%):</span>
+                            <span>₱<asp:Label ID="lblTax" runat="server">0.00</asp:Label></span>
                         </div>
-                    </FooterTemplate>
-                </asp:Repeater>
+                        <div class="flex justify-between font-bold text-lg">
+                            <span>Total:</span>
+                            <span>₱<asp:Label ID="lblTotal" runat="server">0.00</asp:Label></span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Buttons -->
+                    <div class="p-4 flex space-x-2 border-t border-gray-200">
+                        <asp:Button ID="btnClearOrder" runat="server" Text="Clear" OnClick="btnClearOrder_Click"
+                            CssClass="flex-1 bg-neutral text-white py-2 px-4 rounded hover:bg-gray-500 focus:outline-none cursor-pointer" />
+                        <asp:Button ID="btnCheckout" runat="server" Text="Checkout" OnClick="btnCheckout_Click"
+                            CssClass="flex-1 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark cursor-pointer focus:outline-none" />
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Right Side: Order -->
-        <div class="w-96 bg-white border-l border-gray-200 flex flex-col">
-            <!-- Order Header -->
-            <div class="p-4 border-b">
-                <h2 class="text-lg font-medium text-gray-800">Current Order</h2>
-                <p class="text-sm text-gray-500">Order #<asp:Label ID="lblOrderNumber" runat="server"></asp:Label></p>
-            </div>
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full mx-4">
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-secondary">Complete Order</h3>
 
-            <!-- Order Items -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-4">
-                <asp:Repeater ID="rptOrderItems" runat="server" OnItemCommand="rptOrderItems_ItemCommand">
-                    <ItemTemplate>
-                        <div class="flex justify-between items-center">
-                            <div class="flex-1">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 bg-gray-200 rounded-md flex items-center justify-center">
-                                        <span class="text-xs font-medium"><%# Eval("Quantity") %>x</span>
-                                    </div>
-                                    <div class="ml-3">
-                                        <h3 class="text-sm font-medium text-gray-800"><%# Eval("ProductName") %></h3>
-                                        <p class="text-xs text-gray-500"><%# Eval("Price", "${0:F2}") %> each</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-sm font-medium"><%# Eval("Subtotal", "${0:F2}") %></span>
-                                <asp:LinkButton ID="btnRemoveItem" runat="server" CommandName="RemoveItem" CommandArgument='<%# Eval("ProductID") %>'
-                                    CssClass="ml-2 text-gray-400 hover:text-danger">
-                                    <i class="fas fa-times-circle"></i>
-                                </asp:LinkButton>
-                            </div>
+                    <div class="mb-6">
+                        <p class="text-xl font-bold">Total: ₱<asp:Label ID="lblModalTotal" runat="server"></asp:Label></p>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="text-lg font-semibold mb-2">Select Payment Method</h4>
+                        <div class="flex space-x-2">
+                            <asp:Button ID="btnCashPayment" runat="server" Text="Cash" OnClick="btnCashPayment_Click"
+                                CssClass="flex-1 bg-secondary text-white py-2 px-4 rounded hover:bg-secondary-dark focus:outline-none" />
+                            <asp:Button ID="btnCardPayment" runat="server" Text="Card" OnClick="btnCardPayment_Click"
+                                CssClass="flex-1 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark focus:outline-none" />
                         </div>
-                    </ItemTemplate>
-                </asp:Repeater>
-            </div>
+                    </div>
 
-            <!-- Order Summary -->
-            <div class="p-4 border-t bg-gray-50">
-                <div class="space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Subtotal</span>
-                        <span class="font-medium">$<asp:Label ID="lblSubtotal" runat="server">0.00</asp:Label></span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Tax (<asp:Label ID="lblTaxRate" runat="server">12</asp:Label>%)</span>
-                        <span class="font-medium">$<asp:Label ID="lblTax" runat="server">0.00</asp:Label></span>
-                    </div>
-                    <div class="flex justify-between text-lg font-bold">
-                        <span>Total</span>
-                        <span class="text-primary">$<asp:Label ID="lblTotal" runat="server">0.00</asp:Label></span>
-                    </div>
-                </div>
-            </div>
+                    <asp:Panel ID="pnlCashPayment" runat="server" CssClass="mb-4">
+                        <h4 class="text-lg font-semibold mb-2">Cash Amount</h4>
+                        <div class="flex space-x-2 mb-3">
+                            <asp:Button ID="btn100" runat="server" Text="₱100" CommandArgument="100" OnClick="btnQuickAmount_Click"
+                                CssClass="flex-1 bg-light text-gray-700 py-1 px-2 rounded hover:bg-gray-300 focus:outline-none" />
+                            <asp:Button ID="btn200" runat="server" Text="₱200" CommandArgument="200" OnClick="btnQuickAmount_Click"
+                                CssClass="flex-1 bg-light text-gray-700 py-1 px-2 rounded hover:bg-gray-300 focus:outline-none" />
+                            <asp:Button ID="btn500" runat="server" Text="₱500" CommandArgument="500" OnClick="btnQuickAmount_Click"
+                                CssClass="flex-1 bg-light text-gray-700 py-1 px-2 rounded hover:bg-gray-300 focus:outline-none" />
+                            <asp:Button ID="btn1000" runat="server" Text="₱1000" CommandArgument="1000" OnClick="btnQuickAmount_Click"
+                                CssClass="flex-1 bg-light text-gray-700 py-1 px-2 rounded hover:bg-gray-300 focus:outline-none" />
+                        </div>
+                        <div class="flex items-center">
+                            <label class="w-24">Amount:</label>
+                            <asp:TextBox ID="txtCashAmount" runat="server" CssClass="flex-1 py-2 px-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-secondary"></asp:TextBox>
+                        </div>
+                    </asp:Panel>
 
-            <!-- Action Buttons -->
-            <div class="p-4 border-t">
-                <div class="grid grid-cols-2 gap-4">
-                    <asp:LinkButton ID="btnClearOrder" runat="server" OnClick="btnClearOrder_Click"
-                        CssClass="py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-center">
-                        Clear Order
-                    </asp:LinkButton>
-                    <asp:LinkButton ID="btnCheckout" runat="server" OnClick="btnCheckout_Click"
-                        CssClass="py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/90 text-center">
-                        Checkout
-                    </asp:LinkButton>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <asp:Panel ID="pnlChange" runat="server" CssClass="mb-6">
+                        <div class="flex justify-between mb-2">
+                            <span>Cash Amount:</span>
+                            <span>₱<asp:Label ID="lblCashAmount" runat="server">0.00</asp:Label></span>
+                        </div>
+                        <div class="flex justify-between font-bold">
+                            <span>Change:</span>
+                            <span>₱<asp:Label ID="lblChange" runat="server">0.00</asp:Label></span>
+                        </div>
+                    </asp:Panel>
 
-    <!-- Checkout Modal -->
-    <asp:Panel ID="pnlCheckoutModal" runat="server" CssClass="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-lg">
-            <div class="p-6">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">Checkout</h2>
-                
-                <!-- Payment Methods -->
-                <div class="mb-6">
-                    <h3 class="text-sm font-medium text-gray-700 mb-2">Payment Method</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <asp:LinkButton ID="btnCashPayment" runat="server" OnClick="btnCashPayment_Click"
-                            CssClass="py-3 px-4 bg-white border-2 border-primary text-primary rounded-md hover:bg-primary/5 flex items-center justify-center">
-                            <i class="fas fa-money-bill-wave mr-2"></i>
-                            <span>Cash</span>
-                        </asp:LinkButton>
-                        <asp:LinkButton ID="btnCardPayment" runat="server" OnClick="btnCardPayment_Click"
-                            CssClass="py-3 px-4 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 flex items-center justify-center">
-                            <i class="fas fa-credit-card mr-2"></i>
-                            <span>Card</span>
-                        </asp:LinkButton>
+                    <div class="flex justify-end space-x-2">
+                        <asp:Button ID="btnCancelCheckout" runat="server" Text="Cancel" OnClick="btnCancelCheckout_Click"
+                            CssClass="bg-neutral text-white py-2 px-4 rounded hover:bg-gray-500 focus:outline-none" />
+                        <asp:Button ID="btnCompletePayment" runat="server" Text="Complete Payment" OnClick="btnCompletePayment_Click"
+                            CssClass="bg-secondary text-white py-2 px-4 rounded hover:bg-secondary-dark focus:outline-none" />
                     </div>
-                </div>
-
-                <!-- Cash Amount -->
-                <asp:Panel ID="pnlCashPayment" runat="server" CssClass="mb-6">
-                    <label for="txtCashAmount" class="block text-sm font-medium text-gray-700 mb-2">Cash Amount</label>
-                    <asp:TextBox ID="txtCashAmount" runat="server" TextMode="Number" Step="0.01" 
-                        CssClass="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"></asp:TextBox>
-                    
-                    <div class="mt-2 grid grid-cols-3 gap-2">
-                        <asp:Button ID="btn25" runat="server" Text="$25" OnClick="btnQuickAmount_Click" CommandArgument="25"
-                            CssClass="py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-center" />
-                        <asp:Button ID="btn50" runat="server" Text="$50" OnClick="btnQuickAmount_Click" CommandArgument="50"
-                            CssClass="py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-center" />
-                        <asp:Button ID="btn100" runat="server" Text="$100" OnClick="btnQuickAmount_Click" CommandArgument="100"
-                            CssClass="py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 text-center" />
-                    </div>
-                </asp:Panel>
-
-                <!-- Change -->
-                <asp:Panel ID="pnlChange" runat="server" CssClass="mb-6 p-4 bg-gray-50 rounded-md">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Total</span>
-                        <span class="font-medium">$<asp:Label ID="lblModalTotal" runat="server">0.00</asp:Label></span>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <span class="text-gray-600">Cash</span>
-                        <span class="font-medium">$<asp:Label ID="lblCashAmount" runat="server">0.00</asp:Label></span>
-                    </div>
-                    <div class="flex justify-between mt-2 text-lg font-bold">
-                        <span>Change</span>
-                        <span class="text-success">$<asp:Label ID="lblChange" runat="server">0.00</asp:Label></span>
-                    </div>
-                </asp:Panel>
-
-                <!-- Actions -->
-                <div class="flex justify-end space-x-4">
-                    <asp:Button ID="btnCancelCheckout" runat="server" Text="Cancel" OnClick="btnCancelCheckout_Click"
-                        CssClass="py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200" />
-                    <asp:Button ID="btnCompletePayment" runat="server" Text="Complete Payment" OnClick="btnCompletePayment_Click"
-                        CssClass="py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/90" />
                 </div>
             </div>
         </div>
-    </asp:Panel>
-</asp:Content>
+    </form>
 
-<asp:Content ID="Content5" ContentPlaceHolderID="ScriptsContent" runat="server">
+    <!-- JavaScript -->
     <script type="text/javascript">
         function showCheckoutModal() {
-            document.getElementById('<%= pnlCheckoutModal.ClientID %>').classList.remove('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
         }
 
         function hideCheckoutModal() {
-            document.getElementById('<%= pnlCheckoutModal.ClientID %>').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.add('hidden');
         }
-
-        // Calculate change when cash amount changes
-        function calculateChange() {
-            var total = parseFloat(document.getElementById('<%= lblModalTotal.ClientID %>').innerText);
-            var cash = parseFloat(document.getElementById('<%= txtCashAmount.ClientID %>').value) || 0;
-            var change = cash - total;
-            
-            if (change >= 0) {
-                document.getElementById('<%= lblCashAmount.ClientID %>').innerText = cash.toFixed(2);
-                document.getElementById('<%= lblChange.ClientID %>').innerText = change.toFixed(2);
-            } else {
-                document.getElementById('<%= lblCashAmount.ClientID %>').innerText = cash.toFixed(2);
-                document.getElementById('<%= lblChange.ClientID %>').innerText = "0.00";
-            }
-        }
-
-        // Attach event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            var cashInput = document.getElementById('<%= txtCashAmount.ClientID %>');
-            if (cashInput) {
-                cashInput.addEventListener('input', calculateChange);
-            }
-        });
     </script>
-</asp:Content>
+</body>
+</html>

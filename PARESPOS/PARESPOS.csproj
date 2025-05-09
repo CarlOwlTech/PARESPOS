@@ -72,7 +72,9 @@
     <Content Include="MasterPages\Layout.aspx" />
     <Content Include="Pages\Accounts\Login.aspx" />
     <Content Include="Pages\Admin\Dashboard.aspx" />
+    <Content Include="Pages\Admin\ManageAccount.aspx" />
     <Content Include="Pages\Admin\Products.aspx" />
+    <Content Include="Pages\Admin\SalesReport.aspx" />
     <Content Include="Pages\User\Dashboard.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -108,12 +110,26 @@
     <Compile Include="Pages\Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Admin\ManageAccount.aspx.cs">
+      <DependentUpon>ManageAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Admin\ManageAccount.aspx.designer.cs">
+      <DependentUpon>ManageAccount.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Admin\Products.aspx.cs">
       <DependentUpon>Products.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Admin\Products.aspx.designer.cs">
       <DependentUpon>Products.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Admin\SalesReport.aspx.cs">
+      <DependentUpon>SalesReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Admin\SalesReport.aspx.designer.cs">
+      <DependentUpon>SalesReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\User\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>

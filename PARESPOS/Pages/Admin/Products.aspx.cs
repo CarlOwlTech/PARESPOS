@@ -92,7 +92,8 @@ namespace PARESPOS.Pages.Admin
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Login.aspx");
+            // Just redirect to login page
+            Response.Redirect("~/Pages/Accounts/Login.aspx");
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)

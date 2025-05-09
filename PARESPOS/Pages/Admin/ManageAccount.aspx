@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Products.aspx.cs" Inherits="PARESPOS.Pages.Admin.Products" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ManageAccount.aspx.cs" Inherits="PARESPOS.Pages.Admin.ManageAccount" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Product</title>
+    <title>Manage Accounts</title>
 
     <!-- External Styles & Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -216,6 +216,25 @@
             flex: 1;
         }
 
+        /* User Role Badges */
+        .role-badge {
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .role-admin {
+            background-color: #E56441;
+            color: white;
+        }
+
+        .role-cashier {
+            background-color: #3498db;
+            color: white;
+        }
+
         /* Delete Modal */
         .delete-warning {
             text-align: center;
@@ -242,7 +261,7 @@
                 <h2 class="text-4xl font-bold primary-text pl-8 mr-10">ADMIN</h2>
                 <div class="relative w-full">
                     <i class="fas fa-search absolute left-5 top-5 text-[#A8A8AC] text-2xl"></i>
-                    <asp:TextBox ID="txtSearch" runat="server" placeholder="Search products..."
+                    <asp:TextBox ID="txtSearch" runat="server" placeholder="Search accounts..."
                         CssClass="w-full pl-14 pr-6 py-4 bg-[#f7f7f7] border border-[#E56441] rounded-full focus:outline-none focus:ring-2 focus:ring-[#E56441] text-lg" />
                 </div>
             </div>
@@ -258,13 +277,13 @@
                     <a href="Dashboard.aspx" class="nav-item hover:bg-gray-100 text-gray-700">
                         <i class="fas fa-th-large"></i><span class="text-lg">Dashboard</span>
                     </a>
-                    <a href="Products.aspx" class="nav-item active text-white">
+                    <a href="Products.aspx" class="nav-item hover:bg-gray-100 text-gray-700">
                         <i class="fas fa-box"></i><span class="text-lg">Products</span>
                     </a>
                     <a href="SalesReport.aspx" class="nav-item hover:bg-gray-100 text-gray-700">
                         <i class="fas fa-chart-bar"></i><span class="text-lg">Sales Report</span>
                     </a>
-                    <a href="ManageAccount.aspx" class="nav-item hover:bg-gray-100 text-gray-700">
+                    <a href="ManageAccounts.aspx" class="nav-item active text-white">
                         <i class="fas fa-users"></i><span class="text-lg">Manage Accounts</span>
                     </a>
                 </nav>
@@ -287,59 +306,58 @@
         <main class="md:ml-64 pt-28 px-6 pb-8">
             <div class="max-w-full">
                 <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-3xl font-bold text-gray-800">Manage Product</h1>
-                    <!-- Add Product Button -->
+                    <h1 class="text-3xl font-bold text-gray-800">Manage Accounts</h1>
+                    <!-- Add Account Button -->
                     <asp:Button
                         ID="btnShowAddModal"
                         runat="server"
-                        Text="Add New Product"
-                        CssClass="bg-[#E56441] hover:bg-[#d25638] hover:-translate-y-[2px]  cursor-pointer text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200"
+                        Text="Add New Account"
+                        CssClass="bg-[#E56441] hover:bg-[#d25638] hover:-translate-y-[2px] cursor-pointer text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200"
                         OnClientClick="showAddModal(); return false;" />
                 </div>
 
-
                 <div class="bg-white rounded-xl custom-shadow overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-200">
-                        <h2 class="text-2xl font-medium text-gray-800 font-poppins">Product Inventory</h2>
+                        <h2 class="text-2xl font-medium text-gray-800 font-poppins">User Accounts</h2>
                     </div>
 
                     <div class="overflow-x-auto">
-                        <asp:GridView ID="gvProducts" runat="server" AutoGenerateColumns="False"
+                        <asp:GridView ID="gvAccounts" runat="server" AutoGenerateColumns="False"
                             CssClass="min-w-full divide-y divide-gray-200 font-poppins"
                             HeaderStyle-CssClass="bg-gray-50 px-8 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider font-poppins"
                             RowStyle-CssClass="bg-white hover:bg-gray-50 font-poppins"
                             AlternatingRowStyle-CssClass="bg-gray-50 hover:bg-gray-100 font-poppins"
-                            AllowPaging="true" PageSize="10" OnPageIndexChanging="gvProducts_PageIndexChanging"
-                            OnRowCommand="gvProducts_RowCommand">
+                            AllowPaging="true" PageSize="10" OnPageIndexChanging="gvAccounts_PageIndexChanging"
+                            OnRowCommand="gvAccounts_RowCommand">
                             <Columns>
-                                <asp:BoundField DataField="SKU" HeaderText="SKU"
+                                <asp:BoundField DataField="UserID" HeaderText="User ID"
                                     HeaderStyle-CssClass="text-center py-5"
                                     ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-900 font-poppins" />
-                                <asp:BoundField DataField="ProductName" HeaderText="Product Name"
+                                <asp:BoundField DataField="Username" HeaderText="Username"
                                     HeaderStyle-CssClass="text-center py-5"
                                     ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-900 font-poppins" />
-                                <asp:BoundField DataField="Description" HeaderText="Description"
+                                <asp:BoundField DataField="FullName" HeaderText="Full Name"
                                     HeaderStyle-CssClass="text-center py-5"
-                                    ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-500 max-w-xs truncate font-poppins" />
-                                <asp:BoundField DataField="Category" HeaderText="Category"
+                                    ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-900 font-poppins" />
+                                <asp:BoundField DataField="Email" HeaderText="Email"
                                     HeaderStyle-CssClass="text-center py-5"
                                     ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-500 font-poppins" />
-                                <asp:TemplateField HeaderText="Stock Level" HeaderStyle-CssClass="text-center py-5" ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base font-poppins">
+                                <asp:TemplateField HeaderText="Role" HeaderStyle-CssClass="text-center py-5" ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base font-poppins">
                                     <ItemTemplate>
                                         <div class="flex items-center justify-center">
-                                            <%# GetStockLevelBadge(Eval("StockLevel").ToString()) %>
+                                            <%# GetRoleBadge(Eval("Role").ToString()) %>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:BoundField DataField="Price" HeaderText="Price (₱)"
-                                    DataFormatString="{0:N2}"
+                                <asp:BoundField DataField="LastLogin" HeaderText="Last Login"
+                                    DataFormatString="{0:MM/dd/yyyy hh:mm tt}"
                                     HeaderStyle-CssClass="text-center py-5"
-                                    ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-900 font-poppins" />
-                                <asp:ButtonField CommandName="EditProduct" ButtonType="Button" Text="Edit"
+                                    ItemStyle-CssClass="px-8 py-5 text-center whitespace-nowrap text-base text-gray-500 font-poppins" />
+                                <asp:ButtonField CommandName="EditAccount" ButtonType="Button" Text="Edit"
                                     HeaderText="Actions"
                                     HeaderStyle-CssClass="text-right py-5"
                                     ItemStyle-CssClass="px-4 py-2 text-left cursor-pointer text-sm text-blue-600 font-medium font-poppins" />
-                                <asp:ButtonField CommandName="DeleteProduct" ButtonType="Button" Text="Delete"
+                                <asp:ButtonField CommandName="DeleteAccount" ButtonType="Button" Text="Delete"
                                     ItemStyle-CssClass="px-4 py-2 text-left cursor-pointer text-sm text-red-600 font-medium font-poppins" />
                             </Columns>
                             <PagerSettings Mode="NumericFirstLast" FirstPageText="First" LastPageText="Last" Position="Bottom" />
@@ -390,128 +408,117 @@
                     </div>
                 </div>
 
-                <!-- Edit Product Modal -->
-                <div id="editProductModal" class="modal-background hidden">
+                <!-- Edit Account Modal -->
+                <div id="editAccountModal" class="modal-background hidden">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title font-poppins">Edit Product</h3>
+                            <h3 class="modal-title font-poppins">Edit Account</h3>
                             <button type="button" class="close-button" onclick="hideEditModal()">×</button>
                         </div>
 
                         <div>
-                            <asp:HiddenField ID="hdnEditProductSKU" runat="server" />
+                            <asp:HiddenField ID="hdnEditAccountID" runat="server" />
 
                             <div class="form-group">
-                                <label class="form-label">SKU</label>
-                                <asp:TextBox ID="txtEditSKU" runat="server" CssClass="form-control" placeholder="Enter SKU" required="required" ReadOnly="true"></asp:TextBox>
+                                <label class="form-label">Username</label>
+                                <asp:TextBox ID="txtEditUsername" runat="server" CssClass="form-control" ReadOnly="true"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Product Name</label>
-                                <asp:TextBox ID="txtEditProductName" runat="server" CssClass="form-control" placeholder="Enter product name" required="required"></asp:TextBox>
+                                <label class="form-label">Full Name</label>
+                                <asp:TextBox ID="txtEditFullName" runat="server" CssClass="form-control" placeholder="Enter full name" required="required"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Description</label>
-                                <asp:TextBox ID="txtEditDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Enter description"></asp:TextBox>
+                                <label class="form-label">Email</label>
+                                <asp:TextBox ID="txtEditEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address" required="required"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Category</label>
-                                <asp:DropDownList ID="ddlEditCategory" runat="server" CssClass="form-control">
-                                    <asp:ListItem Text="Select Category" Value=""></asp:ListItem>
-                                    <asp:ListItem Text="Main Dish" Value="Main Dish"></asp:ListItem>
-                                    <asp:ListItem Text="Noodles" Value="Noodles"></asp:ListItem>
-                                    <asp:ListItem Text="Combo Meals" Value="Combo Meals"></asp:ListItem>
-                                    <asp:ListItem Text="Sides" Value="Sides"></asp:ListItem>
-                                    <asp:ListItem Text="Beverages" Value="Beverages"></asp:ListItem>
+                                <label class="form-label">Role</label>
+                                <asp:DropDownList ID="ddlEditRole" runat="server" CssClass="form-control">
+                                    <asp:ListItem Text="Cashier" Value="Cashier"></asp:ListItem>
+                                    <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
                                 </asp:DropDownList>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label class="form-label">Stock Level</label>
-                                        <asp:TextBox ID="txtEditStockLevel" runat="server" CssClass="form-control" TextMode="Number" min="0" placeholder="0" required="required"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label class="form-label">Price (₱)</label>
-                                        <asp:TextBox ID="txtEditPrice" runat="server" CssClass="form-control" TextMode="Number" min="0" step="0.01" placeholder="0.00" required="required"></asp:TextBox>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label class="form-label">New Password</label>
+                                <asp:TextBox ID="txtEditPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter new password"></asp:TextBox>
+                                <small class="text-gray-500">Leave blank to keep current password</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Confirm New Password</label>
+                                <asp:TextBox ID="txtEditConfirmPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Confirm new password"></asp:TextBox>
+                            </div>
+
+                            <div class="form-group mt-6 pt-4 border-t border-gray-200">
+                                <label class="form-label text-red-600">Admin Password Verification</label>
+                                <asp:TextBox ID="txtAdminPassword" runat="server" CssClass="form-control border-red-300" TextMode="Password" placeholder="Enter your admin password" required="required"></asp:TextBox>
+                                <small class="text-gray-500">Required to confirm changes</small>
                             </div>
 
                             <div class="button-container">
                                 <button type="button" class="btn btn-secondary" onclick="hideEditModal()">Cancel</button>
-                                <asp:Button ID="btnUpdateProduct" runat="server" Text="Update Product" CssClass="btn btn-primary" OnClick="btnUpdateProduct_Click" />
+                                <asp:Button ID="btnUpdateAccount" runat="server" Text="Update Account" CssClass="btn btn-primary" OnClick="btnUpdateAccount_Click" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Add Product Modal -->
-                <div id="addProductModal" class="modal-background hidden">
+                <!-- Add Account Modal -->
+                <div id="addAccountModal" class="modal-background hidden">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title font-poppins">Add New Product</h3>
+                            <h3 class="modal-title font-poppins">Add New Account</h3>
                             <button type="button" class="close-button" onclick="hideAddModal()">×</button>
                         </div>
 
                         <div>
                             <div class="form-group">
-                                <label class="form-label">SKU</label>
-                                <asp:TextBox ID="txtSKU" runat="server" CssClass="form-control" placeholder="Enter SKU" required="required"></asp:TextBox>
+                                <label class="form-label">Username</label>
+                                <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" placeholder="Enter username" required="required"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Product Name</label>
-                                <asp:TextBox ID="txtProductName" runat="server" CssClass="form-control" placeholder="Enter product name" required="required"></asp:TextBox>
+                                <label class="form-label">Full Name</label>
+                                <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" placeholder="Enter full name" required="required"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Description</label>
-                                <asp:TextBox ID="txtDescription" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" placeholder="Enter description"></asp:TextBox>
+                                <label class="form-label">Email</label>
+                                <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email" placeholder="Enter email address" required="required"></asp:TextBox>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Category</label>
-                                <asp:DropDownList ID="ddlCategory" runat="server" CssClass="form-control">
-                                    <asp:ListItem Text="Select Category" Value=""></asp:ListItem>
-                                    <asp:ListItem Text="Electronics" Value="Pares"></asp:ListItem>
-                                    <asp:ListItem Text="Clothing" Value="Mami"></asp:ListItem>
-                                    <asp:ListItem Text="Food" Value="Lomi"></asp:ListItem>
-                                    <asp:ListItem Text="Home" Value="Silog"></asp:ListItem>
-                                    <asp:ListItem Text="Other" Value="Overload"></asp:ListItem>
+                                <label class="form-label">Role</label>
+                                <asp:DropDownList ID="ddlRole" runat="server" CssClass="form-control">
+                                    <asp:ListItem Text="Cashier" Value="Cashier" Selected="True"></asp:ListItem>
+                                    <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
                                 </asp:DropDownList>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label class="form-label">Stock Level</label>
-                                        <asp:TextBox ID="txtStockLevel" runat="server" CssClass="form-control" TextMode="Number" min="0" placeholder="0" required="required"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="form-col">
-                                    <div class="form-group">
-                                        <label class="form-label">Price (₱)</label>
-                                        <asp:TextBox ID="txtPrice" runat="server" CssClass="form-control" TextMode="Number" min="0" step="0.01" placeholder="0.00" required="required"></asp:TextBox>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Enter password" required="required"></asp:TextBox>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <asp:TextBox ID="txtConfirmPassword" runat="server" CssClass="form-control" TextMode="Password" placeholder="Confirm password" required="required"></asp:TextBox>
                             </div>
 
                             <div class="button-container">
                                 <button type="button" class="btn btn-secondary" onclick="hideAddModal()">Cancel</button>
-                                <asp:Button ID="btnAddProduct" runat="server" Text="Add Product" CssClass="btn btn-primary" OnClick="btnAddProduct_Click" />
+                                <asp:Button ID="btnAddAccount" runat="server" Text="Add Account" CssClass="btn btn-primary" OnClick="btnAddAccount_Click" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Delete Product Modal -->
-                <div id="deleteProductModal" class="modal-background hidden">
+                <!-- Delete Account Modal -->
+                <div id="deleteAccountModal" class="modal-background hidden">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title font-poppins">Confirm Deletion</h3>
@@ -520,11 +527,17 @@
 
                         <div class="delete-warning">
                             <div class="delete-icon">🗑️</div>
-                            <p>Are you sure you want to delete this product?</p>
-                            <p id="productToDelete" style="font-weight: 500; margin-top: 8px;"></p>
+                            <p>Are you sure you want to delete this account?</p>
+                            <p id="accountToDelete" style="font-weight: 500; margin-top: 8px;"></p>
                         </div>
 
-                        <asp:HiddenField ID="hdnProductIdToDelete" runat="server" />
+                        <asp:HiddenField ID="hdnAccountIdToDelete" runat="server" />
+
+                        <div class="form-group mt-6 pt-4 border-t border-gray-200">
+                            <label class="form-label text-red-600">Admin Password Verification</label>
+                            <asp:TextBox ID="txtDeleteAdminPassword" runat="server" CssClass="form-control border-red-300" TextMode="Password" placeholder="Enter your admin password" required="required"></asp:TextBox>
+                            <small class="text-gray-500">Required to confirm deletion</small>
+                        </div>
 
                         <div class="button-container">
                             <button type="button" class="btn btn-secondary" onclick="hideDeleteModal()">Cancel</button>
@@ -535,80 +548,80 @@
             </div>
         </main>
     </form>
+
     <script runat="server">
-        protected string GetStockLevelBadge(string stockLevel)
+        protected string GetRoleBadge(string role)
         {
-            int stock;
-            if (int.TryParse(stockLevel, out stock))
+            if (role.ToLower() == "admin")
             {
-                if (stock <= 0)
-                {
-                    return "<span class='px-3 py-1 text-base font-semibold rounded-full bg-red-100 text-red-800 font-poppins'>" + stockLevel + "</span>";
-                }
-                else if (stock <= 10)
-                {
-                    return "<span class='px-3 py-1 text-base font-semibold rounded-full bg-yellow-100 text-yellow-800 font-poppins'>" + stockLevel + "</span>";
-                }
-                else
-                {
-                    return "<span class='px-3 py-1 text-base font-semibold rounded-full bg-green-100 text-green-800 font-poppins'>" + stockLevel + "</span>";
-                }
+                return "<span class='role-badge role-admin'>Admin</span>";
             }
-            return "<span class='px-3 py-1 text-base font-semibold rounded-full bg-gray-100 text-gray-800 font-poppins'>" + stockLevel + "</span>";
+            else
+            {
+                return "<span class='role-badge role-cashier'>Cashier</span>";
+            }
         }
     </script>
 
     <script type="text/javascript">
-        function showEditModal(sku, productName, description, category, stockLevel, price) {
-            // Set values in the form
-            document.getElementById('<%=hdnEditProductSKU.ClientID%>').value = sku;
-            document.getElementById('<%=txtEditSKU.ClientID%>').value = sku;
-            document.getElementById('<%=txtEditProductName.ClientID%>').value = productName;
-            document.getElementById('<%=txtEditDescription.ClientID%>').value = description;
+        function showEditModal(userId, username, fullName, email, role) {
+            // Set values in form
+            document.getElementById('<%=hdnEditAccountID.ClientID%>').value = userId;
+            document.getElementById('<%=txtEditUsername.ClientID%>').value = username;
+            document.getElementById('<%=txtEditFullName.ClientID%>').value = fullName;
+            document.getElementById('<%=txtEditEmail.ClientID%>').value = email;
 
-            // Set selected value in dropdown
-            var categoryDropdown = document.getElementById('<%=ddlEditCategory.ClientID%>');
-            for (var i = 0; i < categoryDropdown.options.length; i++) {
-                if (categoryDropdown.options[i].value === category) {
-                    categoryDropdown.selectedIndex = i;
+            // Set role in dropdown
+            var roleDropdown = document.getElementById('<%=ddlEditRole.ClientID%>');
+            for (var i = 0; i < roleDropdown.options.length; i++) {
+                if (roleDropdown.options[i].value === role) {
+                    roleDropdown.selectedIndex = i;
                     break;
                 }
             }
 
-            document.getElementById('<%=txtEditStockLevel.ClientID%>').value = stockLevel;
-            document.getElementById('<%=txtEditPrice.ClientID%>').value = price;
+            // Clear password fields
+            document.getElementById('<%=txtEditPassword.ClientID%>').value = '';
+            document.getElementById('<%=txtEditConfirmPassword.ClientID%>').value = '';
+            document.getElementById('<%=txtAdminPassword.ClientID%>').value = '';
 
             // Show modal
-            document.getElementById('editProductModal').classList.remove('hidden');
+            document.getElementById('editAccountModal').classList.remove('hidden');
         }
 
         function hideEditModal() {
-            document.getElementById('editProductModal').classList.add('hidden');
+            document.getElementById('editAccountModal').classList.add('hidden');
         }
 
-
-        // JavaScript functions for modal control
         function showAddModal() {
-            document.getElementById('addProductModal').classList.remove('hidden');
+            // Clear fields
+            document.getElementById('<%=txtUsername.ClientID%>').value = '';
+            document.getElementById('<%=txtFullName.ClientID%>').value = '';
+            document.getElementById('<%=txtEmail.ClientID%>').value = '';
+            document.getElementById('<%=txtPassword.ClientID%>').value = '';
+            document.getElementById('<%=txtConfirmPassword.ClientID%>').value = '';
+
+            // Show modal
+            document.getElementById('addAccountModal').classList.remove('hidden');
         }
 
         function hideAddModal() {
-            document.getElementById('addProductModal').classList.add('hidden');
+            document.getElementById('addAccountModal').classList.add('hidden');
         }
 
-        function showDeleteModal(productId, productName) {
-            document.getElementById('hdnProductIdToDelete').value = productId;
-            document.getElementById('productToDelete').textContent = 'Product: ' + productName;
-            document.getElementById('deleteProductModal').classList.remove('hidden');
+        function showDeleteModal(userId, username, fullName) {
+            document.getElementById('<%=hdnAccountIdToDelete.ClientID%>').value = userId;
+            document.getElementById('accountToDelete').textContent = fullName + ' (' + username + ')';
+            document.getElementById('<%=txtDeleteAdminPassword.ClientID%>').value = '';
+            document.getElementById('deleteAccountModal').classList.remove('hidden');
         }
 
         function hideDeleteModal() {
-            document.getElementById('deleteProductModal').classList.add('hidden');
+            document.getElementById('deleteAccountModal').classList.add('hidden');
         }
-
         // Attach click events to buttons in GridView
         window.onload = function () {
-            var gridView = document.getElementById('<%=gvProducts.ClientID%>');
+            var gridView = document.getElementById('<%=gvAccounts.ClientID%>');
             if (gridView) {
                 // Set up Edit buttons
                 var editButtons = gridView.querySelectorAll('input[type="button"][value="Edit"]');
@@ -616,34 +629,59 @@
                     button.onclick = function () {
                         var row = this.closest('tr');
                         var cells = row.cells;
-                        var sku = cells[0].innerText;
-                        var productName = cells[1].innerText;
-                        var description = cells[2].innerText;
-                        var category = cells[3].innerText;
-                        var stockLevelText = cells[4].innerText.trim();
-                        var stockLevel = stockLevelText.replace(/[^0-9]/g, ''); // Extract numbers only
-                        var priceText = cells[5].innerText;
-                        var price = priceText.replace(/[^0-9.]/g, ''); // Extract numbers and decimal only
 
-                        showEditModal(sku, productName, description, category, stockLevel, price);
-                        return false; // Prevent postback
+                        var userId = cells[0].innerText.trim();
+                        var username = cells[1].innerText.trim();
+                        var fullName = cells[2].innerText.trim();
+                        var email = cells[3].innerText.trim();
+                        var role = cells[4].querySelector('.role-badge').innerText.trim();
+
+                        showEditModal(userId, username, fullName, email, role);
+                        return false;
                     };
                 });
 
-                // Set up Delete buttons (from your original code)
+                // Set up Delete buttons
                 var deleteButtons = gridView.querySelectorAll('input[type="button"][value="Delete"]');
                 deleteButtons.forEach(function (button) {
                     button.onclick = function () {
                         var row = this.closest('tr');
                         var cells = row.cells;
-                        var productId = cells[0].innerText; // Assuming SKU is the product ID
-                        var productName = cells[1].innerText; // Assuming Product Name is in second column
-                        showDeleteModal(productId, productName);
-                        return false; // Prevent postback
+
+                        var userId = cells[0].innerText.trim();
+                        var username = cells[1].innerText.trim();
+                        var fullName = cells[2].innerText.trim();
+
+                        showDeleteModal(userId, username, fullName);
+                        return false;
                     };
                 });
             }
+
+            // Set up mobile sidebar toggle
+            document.getElementById('mobileSidebarToggle').addEventListener('click', function () {
+                var sidebar = document.querySelector('aside');
+                sidebar.classList.toggle('translate-x-0');
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // Initialize mobile sidebar state
+            var sidebar = document.querySelector('aside');
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+            }
+
+            // Handle window resize for responsive sidebar
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 768) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebar.classList.add('translate-x-0');
+                } else if (!sidebar.classList.contains('-translate-x-full') && !sidebar.classList.contains('translate-x-0')) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
         };
     </script>
 </body>
 </html>
+

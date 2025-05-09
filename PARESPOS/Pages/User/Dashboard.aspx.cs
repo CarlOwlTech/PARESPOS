@@ -60,16 +60,18 @@ namespace PARESPOS.Pages.User
 
         private void LoadCategories()
         {
-            // In a real application, fetch from database
+            // Use sample data instead of database connection
             DataTable dt = new DataTable();
             dt.Columns.Add("CategoryID", typeof(int));
             dt.Columns.Add("CategoryName", typeof(string));
 
-            // Add sample categories
-            dt.Rows.Add(1, "Main Course");
-            dt.Rows.Add(2, "Beverages");
-            dt.Rows.Add(3, "Desserts");
-            dt.Rows.Add(4, "Snacks");
+            // Add Pares-specific categories
+            dt.Rows.Add(1, "Pares");
+            dt.Rows.Add(2, "Rice Meals");
+            dt.Rows.Add(3, "Noodles");
+            dt.Rows.Add(4, "Side Dishes");
+            dt.Rows.Add(5, "Beverages");
+            dt.Rows.Add(6, "Desserts");
 
             rptCategories.DataSource = dt;
             rptCategories.DataBind();
@@ -77,7 +79,7 @@ namespace PARESPOS.Pages.User
 
         private void LoadProducts(string categoryFilter, string searchTerm = "")
         {
-            // In a real application, fetch from database with proper filtering
+            // Use sample data instead of database connection
             DataTable dt = new DataTable();
             dt.Columns.Add("ProductID", typeof(int));
             dt.Columns.Add("ProductName", typeof(string));
@@ -88,15 +90,27 @@ namespace PARESPOS.Pages.User
             dt.Columns.Add("InStock", typeof(bool));
             dt.Columns.Add("ImageUrl", typeof(string));
 
-            // Add sample products
-            dt.Rows.Add(1, "Chicken Burger", 1, "Main Course", 8.99m, "In Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(2, "Cola", 2, "Beverages", 1.99m, "Low Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(3, "Chocolate Cake", 3, "Desserts", 4.99m, "Out of Stock", false, "/api/placeholder/400/320");
-            dt.Rows.Add(4, "French Fries", 4, "Snacks", 3.49m, "In Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(5, "Veggie Burger", 1, "Main Course", 7.99m, "In Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(6, "Iced Tea", 2, "Beverages", 1.49m, "In Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(7, "Cheesecake", 3, "Desserts", 5.99m, "In Stock", true, "/api/placeholder/400/320");
-            dt.Rows.Add(8, "Onion Rings", 4, "Snacks", 2.99m, "In Stock", true, "/api/placeholder/400/320");
+            // Add Pares-specific sample products
+            dt.Rows.Add(101, "Beef Pares", 1, "Pares", 85.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(102, "Special Pares", 1, "Pares", 95.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(103, "Pares with Egg", 1, "Pares", 105.00m, "In Stock", true, "/api/placeholder/400/320");
+
+            dt.Rows.Add(201, "Tapsilog", 2, "Rice Meals", 90.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(202, "Silog", 2, "Rice Meals", 75.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(203, "Longsilog", 2, "Rice Meals", 85.00m, "Low Stock", true, "/api/placeholder/400/320");
+
+            dt.Rows.Add(301, "Beef Mami", 3, "Noodles", 95.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(302, "Wonton Noodles", 3, "Noodles", 100.00m, "Out of Stock", false, "/api/placeholder/400/320");
+
+            dt.Rows.Add(401, "Siomai (4pcs)", 4, "Side Dishes", 55.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(402, "Spring Rolls", 4, "Side Dishes", 45.00m, "In Stock", true, "/api/placeholder/400/320");
+
+            dt.Rows.Add(501, "Iced Tea", 5, "Beverages", 35.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(502, "Soda", 5, "Beverages", 45.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(503, "Hot Tea", 5, "Beverages", 30.00m, "Low Stock", true, "/api/placeholder/400/320");
+
+            dt.Rows.Add(601, "Leche Flan", 6, "Desserts", 50.00m, "In Stock", true, "/api/placeholder/400/320");
+            dt.Rows.Add(602, "Halo-Halo", 6, "Desserts", 75.00m, "Out of Stock", false, "/api/placeholder/400/320");
 
             // Filter by category if specified
             if (categoryFilter != "All" && int.TryParse(categoryFilter, out int categoryId))
@@ -123,13 +137,13 @@ namespace PARESPOS.Pages.User
             switch (status)
             {
                 case "In Stock":
-                    return "absolute top-2 right-2 bg-success text-white text-xs px-2 py-1 rounded-full";
+                    return "absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full";
                 case "Low Stock":
-                    return "absolute top-2 right-2 bg-warning text-white text-xs px-2 py-1 rounded-full";
+                    return "absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full";
                 case "Out of Stock":
-                    return "absolute top-2 right-2 bg-danger text-white text-xs px-2 py-1 rounded-full";
+                    return "absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full";
                 default:
-                    return "absolute top-2 right-2 bg-success text-white text-xs px-2 py-1 rounded-full";
+                    return "absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full";
             }
         }
 
@@ -141,8 +155,6 @@ namespace PARESPOS.Pages.User
         {
             LinkButton btn = (LinkButton)sender;
             string categoryId = btn.CommandArgument;
-
-            // Update active category styling (would require AJAX in a real application)
 
             // Load products for the selected category
             LoadProducts(categoryId);
@@ -189,6 +201,12 @@ namespace PARESPOS.Pages.User
                 // Show the checkout modal using JavaScript
                 ScriptManager.RegisterStartupScript(this, GetType(), "showModal", "showCheckoutModal();", true);
             }
+            else
+            {
+                // Show a message if the order is empty
+                ScriptManager.RegisterStartupScript(this, GetType(), "emptyOrder",
+                    "alert('Please add items to your order before checkout.');", true);
+            }
         }
 
         protected void btnCashPayment_Click(object sender, EventArgs e)
@@ -229,7 +247,8 @@ namespace PARESPOS.Pages.User
 
         protected void btnCompletePayment_Click(object sender, EventArgs e)
         {
-            // In a real application, process payment and save order to database
+            // In a real application, we would save the order to database here
+            // For this demo, we'll just clear the order and show a success message
 
             // Clear the current order
             CurrentOrder.Clear();
@@ -246,7 +265,7 @@ namespace PARESPOS.Pages.User
 
             // Show success message
             ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess",
-                "alert('Payment completed successfully!');", true);
+                "alert('Payment completed successfully! Receipt printed.');", true);
         }
 
         #endregion
@@ -255,45 +274,79 @@ namespace PARESPOS.Pages.User
 
         private void AddProductToOrder(int productId)
         {
-            // In a real application, get product details from database
-            // For demo, we'll use hardcoded values based on the sample data
+            // Get product details from our sample data
+            // In a real application, this would fetch from database
             string productName = "";
             decimal price = 0;
 
+            // Find product details based on the product ID
             switch (productId)
             {
-                case 1:
-                    productName = "Chicken Burger";
-                    price = 8.99m;
+                case 101:
+                    productName = "Beef Pares";
+                    price = 85.00m;
                     break;
-                case 2:
-                    productName = "Cola";
-                    price = 1.99m;
+                case 102:
+                    productName = "Special Pares";
+                    price = 95.00m;
                     break;
-                case 3:
-                    productName = "Chocolate Cake";
-                    price = 4.99m;
+                case 103:
+                    productName = "Pares with Egg";
+                    price = 105.00m;
                     break;
-                case 4:
-                    productName = "French Fries";
-                    price = 3.49m;
+                case 201:
+                    productName = "Tapsilog";
+                    price = 90.00m;
                     break;
-                case 5:
-                    productName = "Veggie Burger";
-                    price = 7.99m;
+                case 202:
+                    productName = "Silog";
+                    price = 75.00m;
                     break;
-                case 6:
+                case 203:
+                    productName = "Longsilog";
+                    price = 85.00m;
+                    break;
+                case 301:
+                    productName = "Beef Mami";
+                    price = 95.00m;
+                    break;
+                case 302:
+                    productName = "Wonton Noodles";
+                    price = 100.00m;
+                    break;
+                case 401:
+                    productName = "Siomai (4pcs)";
+                    price = 55.00m;
+                    break;
+                case 402:
+                    productName = "Spring Rolls";
+                    price = 45.00m;
+                    break;
+                case 501:
                     productName = "Iced Tea";
-                    price = 1.49m;
+                    price = 35.00m;
                     break;
-                case 7:
-                    productName = "Cheesecake";
-                    price = 5.99m;
+                case 502:
+                    productName = "Soda";
+                    price = 45.00m;
                     break;
-                case 8:
-                    productName = "Onion Rings";
-                    price = 2.99m;
+                case 503:
+                    productName = "Hot Tea";
+                    price = 30.00m;
                     break;
+                case 601:
+                    productName = "Leche Flan";
+                    price = 50.00m;
+                    break;
+                case 602:
+                    productName = "Halo-Halo";
+                    price = 75.00m;
+                    break;
+                default:
+                    // Handle unknown product
+                    ScriptManager.RegisterStartupScript(this, GetType(), "unknownProduct",
+                        "alert('Unknown product selected.');", true);
+                    return;
             }
 
             // Check if product is already in order
@@ -372,9 +425,10 @@ namespace PARESPOS.Pages.User
 
         private string GenerateOrderNumber()
         {
-            // Generate a random order number for demo purposes
+            // Generate an order number with PARES prefix and date
+            string datePrefix = DateTime.Now.ToString("yyMMdd");
             Random rnd = new Random();
-            return rnd.Next(10000, 99999).ToString();
+            return "PARES-" + datePrefix + "-" + rnd.Next(1000, 9999).ToString();
         }
 
         #endregion

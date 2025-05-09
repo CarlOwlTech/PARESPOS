@@ -123,7 +123,7 @@
                         <i class="fas fa-chart-bar"></i>
                         <span class="text-lg">Sales Report</span>
                     </a>
-                    <a href="ManageAccounts.aspx" class="flex nav-item hover:bg-gray-100 text-gray-700 transition-all font-poppins">
+                    <a href="ManageAccount.aspx" class="flex nav-item hover:bg-gray-100 text-gray-700 transition-all font-poppins">
                         <i class="fas fa-users"></i>
                         <span class="text-lg">Manage Accounts</span>
                     </a>
